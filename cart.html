@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jay's Spray-Paint - Cart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to right, #ff6b6b, #f7d794, #70a1ff, #1e90ff);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      color: #fff;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+    }
+
+    nav a {
+      color: #ffdd59;
+      margin-left: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      background: rgba(0,0,0,0.65);
+      border-radius: 16px;
+      padding: 30px 40px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      color: #ffdd59;
+      margin-bottom: 30px;
+      font-size: 2.8rem;
+      text-transform: uppercase;
+      text-align: center;
+      text-shadow: 0 0 12px #ffdd59aa;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      border-bottom: 1.5px solid #ddd;
+      padding: 25px 0;
+      min-height: 140px;
+    }
+
+    .cart-item img {
+      width: 160px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-right: 30px;
+      box-shadow: 0 0 10px #70a1ff55;
+      flex-shrink: 0;
+    }
+
+    .item-details {
+      flex: 1;
+    }
+
+    .item-name {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      color: #1e90ff;
+      text-shadow: 0 0 8px #1e90ffaa;
+    }
+
+    .item-price {
+      font-weight: 700;
+      color: #ff6b6b;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .item-quantity {
+      margin-bottom: 10px;
+    }
+
+    .item-quantity label {
+      margin-right: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #f7d794cc;
+    }
+
+    .item-quantity input {
+      width: 60px;
+      padding: 8px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: none;
+      text-align: center;
+    }
+
+    .remove-btn {
+      background: #ff6b6b;
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      font-size: 1.05rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .remove-btn:hover {
+      background: #ff8787;
+    }
+
+    .total-section {
+      text-align: right;
+      margin-top: 30px;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffdd59;
+      text-shadow: 0 0 8px #ffdd59cc;
+    }
+
+    .empty-cart {
+      text-align: center;
+      font-size: 1.5rem;
+      color: #fff;
+      margin: 60px 0;
+      font-weight: 600;
+      text-shadow: 0 0 6px #000;
+    }
+
+    a.back-link {
+      display: inline-block;
+      margin-top: 30px;
+      color: #ffdd59;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+
+    a.back-link:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div style="font-size: 1.8em; font-weight: bold;">Jay's Spray-Paint</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#shop">Shop</a>
+      <a href="index.html#payment">Payment</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="cart.html" title="View Cart">🛒</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Your Shopping Cart</h1>
+
+    <div id="cart-container">
+      <!-- Cart items will appear here dynamically -->
+    </div>
+
+    <div class="total-section" id="total-section">
+      Total: $0.00
+    </div>
+
+    <a href="index.html#shop" class="back-link">← Continue Shopping</a>
+  </main>
+
+  <script>
+    // Load cart from localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function formatPrice(num) {
+      return '$' + num.toFixed(2);
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cart-container');
+      container.innerHTML = '';
+
+      if(cart.length === 0) {
+        container.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
+        document.getElementById('total-section').textContent = 'Total: $0.00';
+        return;
+      }
+
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        total += item.price * item.quantity;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+
+        itemDiv.innerHTML = `
+          <img src="${item.img}" alt="${item.name}">
+          <div class="item-details">
+            <div class="item-name">${item.name}</div>
+            <div class="item-price">${formatPrice(item.price)}</div>
+            <div class="item-quantity">
+              <label for="qty-${index}">Qty:</label>
+              <input type="number" id="qty-${index}" min="1" value="${item.quantity}" onchange="updateQuantity(${index}, this.value)">
+            </div>
+            <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+          </div>
+        `;
+
+        container.appendChild(itemDiv);
+      });
+
+      document.getElementById('total-section').textContent = `Total: ${formatPrice(total)}`;
+    }
+
+    function updateQuantity(index, newQty) {
+      const qty = parseInt(newQty);
+      if (qty > 0) {
+        cart[index].quantity = qty;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+      }
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    renderCart();
+  </script>
+
+</body>
+</html>
