@@ -6,7 +6,6 @@
   <title>Jay's Spray-Paint</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    /* Same styles as before, with any needed adjustments */
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
@@ -119,9 +118,17 @@
     }
   </style>
   <script>
-    function addToCart(itemName, price) {
+    function addToCart(itemName, price, img) {
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      cart.push({ name: itemName, price: price });
+
+      let existingItem = cart.find(item => item.name === itemName);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ name: itemName, price: price, quantity: 1, img: img });
+      }
+
       localStorage.setItem('cart', JSON.stringify(cart));
       alert(itemName + " added to cart!");
     }
@@ -152,11 +159,40 @@
 
   <div class="content" id="shop">
     <h2>Shop</h2>
+
     <div class="shop-item">
-      <img src="https://images.unsplash.com/photo-1599058917212-d750089bc7d5?auto=format&fit=crop&w=800&q=80" alt="Spray Paint Canvas" />
+      <img src="https://images.unsplash.com/photo-1599058917212-d750089bc7d5?auto=format&fit=crop&w=800&q=80" alt="Spray Paint Canvas - Abstract" />
       <h3>Spray Paint Canvas - Abstract</h3>
       <p>$30.00</p>
-      <button onclick="addToCart('Spray Paint Canvas - Abstract', 30)">Add to Cart</button>
+      <button onclick="addToCart('Spray Paint Canvas - Abstract', 30, 'https://images.unsplash.com/photo-1599058917212-d750089bc7d5?auto=format&fit=crop&w=800&q=80')">Add to Cart</button>
+    </div>
+
+    <div class="shop-item">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Color Splash Mural" />
+      <h3>Color Splash Mural</h3>
+      <p>$45.00</p>
+      <button onclick="addToCart('Color Splash Mural', 45, 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80')">Add to Cart</button>
+    </div>
+
+    <div class="shop-item">
+      <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=800&q=80" alt="Neon Street Art Canvas" />
+      <h3>Neon Street Art Canvas</h3>
+      <p>$35.00</p>
+      <button onclick="addToCart('Neon Street Art Canvas', 35, 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=800&q=80')">Add to Cart</button>
+    </div>
+
+    <div class="shop-item">
+      <img src="https://images.unsplash.com/photo-1521194665331-9de6e9d61e87?auto=format&fit=crop&w=800&q=80" alt="Graffiti Style Wall Art" />
+      <h3>Graffiti Style Wall Art</h3>
+      <p>$50.00</p>
+      <button onclick="addToCart('Graffiti Style Wall Art', 50, 'https://images.unsplash.com/photo-1521194665331-9de6e9d61e87?auto=format&fit=crop&w=800&q=80')">Add to Cart</button>
+    </div>
+
+    <div class="shop-item">
+      <img src="https://images.unsplash.com/photo-1498579809087-7a3a9be39874?auto=format&fit=crop&w=800&q=80" alt="Urban Spray Paint Art" />
+      <h3>Urban Spray Paint Art</h3>
+      <p>$40.00</p>
+      <button onclick="addToCart('Urban Spray Paint Art', 40, 'https://images.unsplash.com/photo-1498579809087-7a3a9be39874?auto=format&fit=crop&w=800&q=80')">Add to Cart</button>
     </div>
   </div>
 
