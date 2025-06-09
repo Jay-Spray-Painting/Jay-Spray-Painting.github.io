@@ -38,8 +38,6 @@
       text-decoration: none;
       font-weight: bold;
       transition: color 0.3s ease;
-      display: inline-block;
-      margin-top: 10px;
     }
 
     nav a:hover {
@@ -57,10 +55,9 @@
       text-shadow: 2px 2px 8px #000;
       font-family: 'Orbitron', sans-serif;
       text-align: center;
-      padding: 20px;
     }
 
-    .content, .payment-section {
+    .content {
       padding: 30px 20px;
       text-align: center;
       background: rgba(0, 0, 0, 0.6);
@@ -69,13 +66,6 @@
       max-width: 800px;
       box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(6px);
-    }
-
-    .content h2, .payment-section h2 {
-      color: #ffdd59;
-      font-size: 1.8em;
-      margin-bottom: 20px;
-      text-transform: uppercase;
     }
 
     .shop-item {
@@ -107,33 +97,6 @@
       background: #fff;
     }
 
-    #cartPage {
-      display: none;
-    }
-
-    .cart-section {
-      padding: 30px 20px;
-      text-align: center;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 16px;
-      margin: 20px auto;
-      max-width: 800px;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(6px);
-    }
-
-    .payment-option {
-      margin: 20px 0;
-      font-size: 1.2em;
-      color: #f1f2f6;
-    }
-
-    .payment-option img {
-      height: 40px;
-      vertical-align: middle;
-      margin-right: 10px;
-    }
-
     footer {
       background: rgba(0, 0, 0, 0.8);
       color: #aaa;
@@ -142,38 +105,7 @@
       font-size: 0.9em;
     }
 
-    a {
-      color: #ffdd59;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    /* Mobile tweaks */
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav {
-        margin-top: 10px;
-      }
-
-      .hero {
-        font-size: 1.8em;
-        height: auto;
-      }
-
-      .shop-item button {
-        padding: 15px 25px;
-        font-size: 1.1em;
-      }
-    }
-
-    /* Custom popup */
+    /* Popup */
     #popup {
       position: fixed;
       bottom: 30px;
@@ -188,6 +120,22 @@
       display: none;
       z-index: 9999;
     }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        margin-top: 10px;
+      }
+
+      .hero {
+        font-size: 1.8em;
+        height: auto;
+      }
+    }
   </style>
 </head>
 <body>
@@ -198,21 +146,13 @@
     <div style="font-size: 1.8em; font-weight: bold;">Jay's Spray-Paint</div>
     <nav>
       <a href="#">Home</a>
-      <a href="#services">Services</a>
       <a href="#shop">Shop</a>
-      <a href="#payment">Payment</a>
-      <a href="#contact">Contact</a>
-      <a href="javascript:void(0)" onclick="showCart()">🛒 Cart</a>
+      <a href="cart.html">🛒 Cart</a>
     </nav>
   </header>
 
   <div class="hero">
     Custom Spray-Paint Art
-  </div>
-
-  <div class="content" id="services">
-    <h2>Our Services</h2>
-    <p>Custom spray-paint artwork on canvases, clothing, walls, and more! Let your creativity explode in bold graffiti-style art with neon vibes.</p>
   </div>
 
   <div class="content" id="shop">
@@ -221,32 +161,8 @@
       <img src="https://images.unsplash.com/photo-1599058917212-d750089bc7d5?auto=format&fit=crop&w=800&q=80" alt="Spray Paint Canvas">
       <h3>Spray Paint Canvas - Abstract</h3>
       <p>$30.00</p>
-      <button onclick="addToCart('Spray Paint Canvas - Abstract')">Add to Cart</button>
+      <button onclick="addToCart('Spray Paint Canvas - Abstract', 30)">Add to Cart</button>
     </div>
-  </div>
-
-  <div class="cart-section" id="cartPage">
-    <h2>Your Cart</h2>
-    <div id="cartItems"></div>
-    <h3 id="totalPrice"></h3>
-  </div>
-
-  <div class="payment-section" id="payment">
-    <h2>Payment Options</h2>
-    <div class="payment-option">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Venmo_logo.svg/2560px-Venmo_logo.svg.png" alt="Venmo" />
-      Pay via Venmo: <strong>@JaysArt</strong>
-    </div>
-    <div class="payment-option">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Cash_App_logo.svg/2560px-Cash_App_logo.svg.png" alt="Cash App" />
-      Pay via Cash App: <strong>$JaysPaint</strong>
-    </div>
-  </div>
-
-  <div class="content" id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:jay@spraypaintart.com">jay@spraypaintart.com</a></p>
-    <p>Instagram: <a href="https://instagram.com/jaysart" target="_blank">@jaysart</a></p>
   </div>
 
   <footer>
@@ -254,44 +170,23 @@
   </footer>
 
   <script>
-    let cart = [];
-
     function showPopup(message) {
       const popup = document.getElementById("popup");
       popup.textContent = message;
       popup.style.display = "block";
       setTimeout(() => {
         popup.style.display = "none";
-      }, 2000);
+      }, 1500);
     }
 
-    function addToCart(item) {
-      cart.push({ name: item, price: 30 });
-      showPopup(item + " added to cart!");
-      showCart();
-    }
-
-    function showCart() {
-      const cartPage = document.getElementById("cartPage");
-      cartPage.style.display = "block";
-      const cartItems = document.getElementById("cartItems");
-      const totalPrice = document.getElementById("totalPrice");
-      cartItems.innerHTML = "";
-      let total = 0;
-
-      if (cart.length === 0) {
-        cartItems.innerHTML = "<p>Your cart is empty.</p>";
-      } else {
-        cart.forEach(item => {
-          const itemEl = document.createElement("p");
-          itemEl.textContent = `${item.name} - $${item.price.toFixed(2)}`;
-          cartItems.appendChild(itemEl);
-          total += item.price;
-        });
-        totalPrice.textContent = `Total: $${total.toFixed(2)}`;
-      }
-
-      cartPage.scrollIntoView({ behavior: "smooth" });
+    function addToCart(name, price) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ name, price });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      showPopup(name + " added to cart!");
+      setTimeout(() => {
+        window.location.href = "cart.html";
+      }, 1600);
     }
   </script>
 </body>
